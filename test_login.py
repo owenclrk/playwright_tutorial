@@ -29,10 +29,10 @@ def test_login_page_loads(login_page: Page):
 )
 def test_fails_with_invalid_creditentials(login_page: Page, username, password, expected_error):
     login_page.get_by_label('Username').fill(username)
-    login_page.get_by_label('Password').fill(password)
+    login_page.get_by_label("Password").fill(password)
     login_page.get_by_role("button", name ='Login').click()
 
     error_message = login_page.locator("#flash")
     expect(error_message).to_be_visible()
-    expect(error_message).to_contain_text("Your username is invalid!")
+    expect(error_message).to_contain_text(expected_error)
     
