@@ -11,4 +11,6 @@ def login_page(page: Page, request: pytest.FixtureRequest) -> Page:
     screenshot_path = f"tests/screenshots/{request.node.name}.png"
     page.screenshot(path=screenshot_path)
 
-    extra =
+    extra = getattr(request.node, "extra",[])
+    extra.append(pytest_html.extras.image(screenshot_path))
+    request.node.extra = extra
