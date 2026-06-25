@@ -11,7 +11,7 @@ def test_login_page_loads(login_page: Page):
     login_page.get_by_label("Password").fill("SuperSecretPassword!")
 
     #login_page.locator("button[type='submit']").click()
-    login_page.get_by_role("button",name="login").click()
+    login_page.get_by_role("button",name="Login").click()
 
     success_message = login_page.locator("#flash")
     expect(success_message).to_be_visible()
@@ -28,9 +28,9 @@ def test_login_page_loads(login_page: Page):
         ],
 )
 def test_fails_with_invalid_creditentials(login_page: Page, username, password, expected_error):
-    login_page.locator('#username').fill("wrong_username")
-    login_page.locator('#password').fill("wrong_password")
-    login_page.locator("button[type='submit']").click()
+    login_page.get_by_label('Username').fill(username)
+    login_page.get_by_label('Password').fill(password)
+    login_page.get_by_role("button", name ='Login').click()
 
     error_message = login_page.locator("#flash")
     expect(error_message).to_be_visible()
