@@ -12,7 +12,8 @@ def test_login_page_loads(login_page: Page):
     password_field = login_page.locator("#password")
     password_field.fill("SuperSecretPassword!")
 
-    login_page.locator("button[type='submit']").click()
+    #login_page.locator("button[type='submit']").click()
+    login_page.get_by_role("button",name="login").click()
 
     success_message = login_page.locator("#flash")
     expect(success_message).to_be_visible()
