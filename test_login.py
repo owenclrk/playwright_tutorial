@@ -12,3 +12,7 @@ def test_login_page_loads(page: Page):
     password_field.fill("SuperSecretPassword!")
 
     page.locator("button[type='submit']").click()
+
+    success_message = page.locator("#flash")
+    expect(success_message).to_be_visible()
+    expect(success_message).to_contain_text("You logged into a secure area")
