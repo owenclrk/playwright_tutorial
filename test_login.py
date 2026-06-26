@@ -42,3 +42,22 @@ def test_fails_with_invalid_creditentials(login_page: Page, username, password, 
 def test_secure_area_accessible_with_saved_sessions(authenticated_page: Page):
     authenticated_page.goto(f"{BASE_URL}/secure")
     expect(authenticated_page.locator("h2")).to_contain_text("Secure Area")
+
+
+def test_can_observe_network_request(page: Page):
+    requests_seen = []
+    page.on('request',lambda request: requests_seen.append(request.url))
+    page.goto(f"{BASE_URL}/login")
+    assert any ("login" in url for url in requests_seen)
+
+def test_can_mock_a_response(page: Page):
+    def handle_route(route):
+        route.fulfill(
+            status=200,
+            content_type="text/html",
+            body="<html><body><h1>This is a fake page</h1></body></html>",
+        )
+    page.route(f"{BASE_URL}/login", handle_route)
+    page.goto(f"{BASE_URL}/login")
+
+    expect(page.locator("h1")).to_have_text("This is a fake page")
