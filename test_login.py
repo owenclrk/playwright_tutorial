@@ -1,4 +1,5 @@
 from playwright.sync_api import Page, expect
+from login_page import LoginPage
 import pytest
 import os
 from dotenv import load_dotenv
@@ -12,11 +13,10 @@ VALID_PASSWORD = os.environ["VALID_PASSWORD"]
 
 
 def test_login_page_loads(login_page: Page):
+    page_obj = LoginPage(login_page)
     expect(login_page).to_have_title("The Internet")
 
-    login_page.get_by_label("Username").fill(VALID_USERNAME)
-
-    login_page.get_by_label("Password").fill(VALID_PASSWORD)
+    page_obj.login(VALID_USERNAME, VALID_PASSWORD)
 
     #login_page.locator("button[type='submit']").click()
     login_page.get_by_role("button",name="Login").click()
