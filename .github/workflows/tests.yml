@@ -32,4 +32,4 @@ jobs:
         run: playwright install --with-deps
 
       - name: Run tests on ${{ matrix.browser }}
-        run: python -m pytest -v --browser ${{ matrix.browser }} --reruns 2 --reruns-delay 3
+        run: python -m pytest -v --browser ${{ matrix.browser }} --reruns 2 --reruns-delay 3 -n auto
