@@ -33,6 +33,7 @@ report.html
 *.manifest
 *.spec
 .env
+tests/.auth/
 
 # Installer logs
 pip-log.txt

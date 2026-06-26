@@ -16,5 +16,5 @@ class LoginPage:
         self.page.get_by_role("link", name="Logout").click()
     
     @property
-    def flash_messaging(self):
+    def flash_message(self):
         return self.page.locator("#flash")

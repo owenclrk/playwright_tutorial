@@ -7,7 +7,7 @@ load_dotenv()
 
 
 
-
+BASE_URL = os.environ["BASE_URL"]
 VALID_USERNAME = os.environ["VALID_USERNAME"]
 VALID_PASSWORD = os.environ["VALID_PASSWORD"]
 
@@ -17,9 +17,6 @@ def test_login_page_loads(login_page: Page):
     expect(login_page).to_have_title("The Internet")
 
     page_obj.login(VALID_USERNAME, VALID_PASSWORD)
-
-    #login_page.locator("button[type='submit']").click()
-    login_page.get_by_role("button",name="Login").click()
 
     success_message = login_page.locator("#flash")
     expect(success_message).to_be_visible()
@@ -36,11 +33,12 @@ def test_login_page_loads(login_page: Page):
         ],
 )
 def test_fails_with_invalid_creditentials(login_page: Page, username, password, expected_error):
-    login_page.get_by_label('Username').fill(username)
-    login_page.get_by_label("Password").fill(password)
-    login_page.get_by_role("button", name ='Login').click()
+    page_obj = LoginPage(login_page)
+    page_obj.login(username, password)
 
-    error_message = login_page.locator("#flash")
-    expect(error_message).to_be_visible()
-    expect(error_message).to_contain_text(expected_error)
+    expect(page_obj.flash_message).to_be_visible()
+    expect(page_obj.flash_message).to_contain_text(expected_error)
     
+def test_secure_area_accessible_with_saved_sessions(authenticated_page: Page):
+    authenticated_page.goto(f"{BASE_URL}/secure")
+    expect(authenticated_page.locator("h2")).to_contain_text("Secure Area")
